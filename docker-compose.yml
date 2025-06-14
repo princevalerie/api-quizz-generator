@@ -1,0 +1,19 @@
+services:
+  quiz-api:
+    build: .
+    ports:
+      - "3001:8000"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - API_WORKERS=1
+      - LOG_LEVEL=INFO
+      - RATE_LIMIT_PER_MINUTE=60
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
